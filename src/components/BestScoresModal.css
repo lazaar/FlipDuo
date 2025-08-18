@@ -1,0 +1,125 @@
+.best-scores-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.best-scores-modal-content {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.best-scores-modal-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 25px;
+    color: #333;
+    font-family: 'DragonFruitDays', sans-serif;
+}
+
+.scores-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.score-card {
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.score-card:hover {
+    transform: translateY(-2px);
+}
+
+.score-card.simple-score {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.score-card.flash-score {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+}
+
+.score-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.score-icon {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.score-mode {
+    font-size: 1.2rem;
+    font-weight: 600;
+    font-family: 'DragonFruitDays', sans-serif;
+}
+
+.score-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 2.5rem;
+    font-weight: bold;
+    font-family: 'DragonFruitDays', sans-serif;
+}
+
+.trophy-icon {
+    font-size: 2rem;
+    color: #ffd700;
+}
+
+.best-scores-modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.best-scores-modal-button {
+    background: linear-gradient(#88c1ef, #3594ef);
+    border: none;
+    border-radius: 25px;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 12px 30px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'DragonFruitDays', sans-serif;
+    box-shadow: 0 4px 0 #145b9e;
+}
+
+.best-scores-modal-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #145b9e;
+}
+
+.best-scores-modal-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 0 #145b9e;
+}

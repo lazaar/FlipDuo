@@ -1,0 +1,81 @@
+
+ion-content {
+    --background: transparent;
+}
+
+ion-title {
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    font-family: "DragonFruitDays", sans-serif;
+}
+
+ion-back-button {
+    --color: #ffffff;
+}
+
+/* Styles pour les cartes de niveau Ionic */
+.crossword-button {
+    background: linear-gradient(#ff7675, #b94040);
+    box-shadow: 0 4px 0 #5f1515;
+    border-radius: 8px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+    font-family: "DragonFruitDays", sans-serif;
+    font-size: 2rem;
+    min-height: 140px;
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+
+.crossword-button.locked {
+    opacity: 0.5;
+    filter: grayscale(75%) blur(1px);
+}
+
+
+.crossword-title {
+    font-size: 2rem;
+    color: #fff;
+    text-align: center;
+    line-height: 1.2;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 0.5rem;
+}
+
+.crossword-content .stars-container{
+    margin-top: 1rem;
+}
+
+.crossword-lock-icon {
+    font-size: 2.3rem;
+    color: #ffffff;
+    margin-top: 1.2rem;
+}
+
+/* Styles pour les badges et icônes */
+ion-badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Styles pour la toolbar avec étoiles */
+ion-toolbar ion-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+}
+
+ion-toolbar ion-icon {
+    font-size: 1rem;
+}
+
