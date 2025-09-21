@@ -1,9 +1,10 @@
 import { Redirect, Route } from "react-router-dom";
-import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
+import { IonApp, IonRouterOutlet, setupIonicReact, useIonRouter } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
 import { App as CapacitorApp } from "@capacitor/app";
+import { StatusBar, Style } from '@capacitor/status-bar';
 import { useEffect } from "react";
 import Home from "./pages/Home";
 import Play from "./pages/Play.tsx";
@@ -48,22 +49,36 @@ setupIonicReact();
 const persistor = persistStore(store);
 
 const App: React.FC = () => {
+
+    const router = useIonRouter();
+
     useEffect(() => {
         initAudio();
     }, []);
 
     useEffect(() => {
-        CapacitorApp.addListener("backButton", () => {
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                CapacitorApp.exitApp();
-            }
-        });
-        return () => {
-            CapacitorApp.removeAllListeners();
-        };
-    }, []);
+    const backHandler = CapacitorApp.addListener('backButton', ({ canGoBack }) => {
+      if (canGoBack) {
+        router.goBack();
+      } else {
+        // Already at first page → exit app
+        CapacitorApp.exitApp();
+      }
+    });
+
+    return () => {
+      void backHandler.then(handler => handler.remove());
+    };
+  }, [router]);
+
+     (async () => {
+      try {
+        await StatusBar.setOverlaysWebView({ overlay: false });
+        await StatusBar.setStyle({ style: Style.Light }); // or Style.Dark
+      } catch (err) {
+        console.warn('StatusBar plugin not available in web preview', err);
+      }
+    })();
 
     return (
         <Provider store={store}>
@@ -94,3 +109,5 @@ const App: React.FC = () => {
 };
 
 export default App;
+
+
