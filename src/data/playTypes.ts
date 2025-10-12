@@ -43,5 +43,7 @@ export interface DiamondsBag {
 
 export interface PlayPageProps {
     mode?: keyof FlipConstantsType["mode"];
+    setShowWatchAdModal?: (show: boolean) => void;
+    setTypeAd?: (type: "showOne" | "showAll") => void;
     difficulty?: Difficulty;
 }

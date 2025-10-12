@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "ma.ifelse.flipduo"
+    namespace "com.miscstudio.flipduo"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "ma.ifelse.flipduo"
+        applicationId "com.miscstudio.flipduo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

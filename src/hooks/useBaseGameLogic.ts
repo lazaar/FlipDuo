@@ -12,6 +12,7 @@ import {
 } from "../data/playUtils";
 import { usePlayData } from "./usePlayData";
 import { playSound } from "../data/audio";
+import { admobService } from "../data/admob/adMobService";
 
 function generateNewCard(max: number): number | "X" | "J" {
     const random = Math.random();
@@ -146,6 +147,8 @@ export interface BaseGameActions {
 export function useBaseGameLogic({
     difficulty = "medium",
     isFlashMode = false,
+    setShowWatchAdModal,
+    setTypeAd
 }: PlayPageProps & { isFlashMode?: boolean }) {
     const gridSize = difficulty ? FlipConstants.difficulty[difficulty] : 4;
     const {
@@ -436,11 +439,19 @@ export function useBaseGameLogic({
 
     const onShowAll = (isSure: boolean): void => {
         if (diamonds.showAll <= 0) {
-            setInfo({
-                show: true,
-                content: 'No "Show All Diamonds" enough :(',
-            });
-            setTimeout(() => setInfo({ show: false }), 2000);
+            if (admobService.getIsRewardedLoaded()) {
+                if(setShowWatchAdModal){
+                    setShowWatchAdModal(true);
+                }
+                if(setTypeAd)
+                    setTypeAd("showAll");
+            } else {
+                setInfo({
+                    show: true,
+                    content: 'No "Show All Diamonds" enough :(',
+                });
+                setTimeout(() => setInfo({ show: false }), 2000);
+            }
             return;
         }
 
@@ -471,11 +482,19 @@ export function useBaseGameLogic({
 
     const onToggleShowOne = (): void => {
         if (diamonds.showOne <= 0) {
-            setInfo({
-                show: true,
-                content: 'No "Show One Diamonds" enough :(',
-            });
-            setTimeout(() => setInfo({ show: false }), 2000);
+            if (admobService.getIsRewardedLoaded()) {
+                if(setShowWatchAdModal)
+                    setShowWatchAdModal(true);
+                if(setTypeAd)
+                    setTypeAd("showOne");
+            } else {
+                setInfo({
+                    show: true,
+                    content: 'No "Show One Diamonds" enough :(',
+                });
+                setTimeout(() => setInfo({ show: false }), 2000);
+            }
+
             return;
         }
         const next = !showOne;

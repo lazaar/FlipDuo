@@ -1,4 +1,4 @@
-package ma.ifelse.flipduo;
+package com.miscstudio.flipduo;
 
 import com.getcapacitor.BridgeActivity;
 

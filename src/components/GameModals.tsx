@@ -92,6 +92,58 @@ export const LoseModal: React.FC<LoseModalProps> = ({
     );
 };
 
+interface WatchAdModalProps {
+  isOpen: boolean;
+  onWatch: () => void;
+  onCancel: () => void;
+}
+
+export const WatchAdModal: React.FC<WatchAdModalProps> = ({
+  isOpen,
+  onWatch,
+  onCancel,
+}) => {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          className="confirm-modal-overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            className="confirm-modal-content"
+          >
+            <div className="confirm-modal-title">Get a Hint!</div>
+            <div className="confirm-modal-text">
+              Watch an ad to earn <strong>1 Hint</strong>.
+            </div>
+            <div className="confirm-modal-buttons">
+              <button
+                className="confirm-modal-button-rose"
+                onClick={onCancel}
+              >
+                Cancel
+              </button>
+              <button
+                className="confirm-modal-button-sky"
+                onClick={onWatch}
+              >
+                Watch
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
+
 export const ConfirmModal: React.FC<ConfirmModalProps> = ({
     showAllConfirm,
     onShowAll,

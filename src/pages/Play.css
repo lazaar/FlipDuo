@@ -1,5 +1,6 @@
 
 
+
 .bottom-navigation {
     background: var(--ion-color-info-dark);
     color: white;
@@ -501,9 +502,10 @@
 }
 
 .content-container {
-    padding: 0 0.75rem;
+    padding: 0 0.75rem 60px;
     display: flex;
     flex-direction: column;
+    padding-bottom: 60px; /* espace pour la bannière */
     align-items: center;
     justify-content: center;
     height: 100%;

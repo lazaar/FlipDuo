@@ -1,9 +1,10 @@
 import { PlayPageProps } from "../data/playTypes";
 import { FlipConstants } from "../data/playConstants";
 import { useBaseGameLogic } from "./useBaseGameLogic";
+import { admobService } from "../data/admob/adMobService";
 
-export function useGameLogic({ difficulty = "medium" }: PlayPageProps) {
-    const baseGame = useBaseGameLogic({ difficulty, isFlashMode: false });
+export function useGameLogic({ difficulty = "medium", setShowWatchAdModal, setTypeAd }: PlayPageProps) {
+    const baseGame = useBaseGameLogic({ difficulty, isFlashMode: false, setShowWatchAdModal, setTypeAd });
 
 
     const onContinue = (): void => {
@@ -14,7 +15,8 @@ export function useGameLogic({ difficulty = "medium" }: PlayPageProps) {
         }, 700);
     };
 
-    const onTryAgain = (): void => {
+    const onTryAgain = async (): Promise<void> => {
+        await admobService.showInterstitial();
         baseGame.setHearts(FlipConstants.init.hearts);
         baseGame.onTryAgain();
     };

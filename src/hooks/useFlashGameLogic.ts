@@ -3,13 +3,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { PlayPageProps } from "../data/playTypes";
 import { useBaseGameLogic } from "./useBaseGameLogic";
 import { RootState } from "../store";
+import { admobService } from "../data/admob/adMobService";
 
-export function useFlashGameLogic({ difficulty = "medium" }: PlayPageProps) {
+export function useFlashGameLogic({
+    difficulty = "medium",
+    setShowWatchAdModal,
+    setTypeAd,
+}: PlayPageProps) {
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const dispatch = useDispatch();
     const { bestScoreFlash } = useSelector((state: RootState) => state.play);
-    
-    const baseGame = useBaseGameLogic({ difficulty, isFlashMode: true });
+
+    const baseGame = useBaseGameLogic({
+        difficulty,
+        isFlashMode: true,
+        setShowWatchAdModal,
+        setTypeAd,
+    });
 
     // Timer effect using setInterval for more reliable timing
     useEffect(() => {
@@ -50,13 +60,15 @@ export function useFlashGameLogic({ difficulty = "medium" }: PlayPageProps) {
         };
     }, [baseGame.gameStarted, baseGame.lose, dispatch, bestScoreFlash]);
 
-    const onTryAgain = (): void => {
+    const onTryAgain = async (): Promise<void> => {
         // Clear any existing interval first
         if (intervalRef.current) {
             clearInterval(intervalRef.current);
             intervalRef.current = null;
         }
         baseGame.setTimeLeft(60); // Reset timer to 60 seconds
+        await admobService.showInterstitial();
+
         baseGame.onTryAgain();
     };
 
@@ -73,11 +85,12 @@ export function useFlashGameLogic({ difficulty = "medium" }: PlayPageProps) {
                     baseGame.setToast({ open: true, msg: "Share canceled" });
                 });
         } else {
-            navigator.clipboard
-                .writeText(msg)
-                .then(() =>
-                    baseGame.setToast({ open: true, msg: "Copied to clipboard" })
-                );
+            navigator.clipboard.writeText(msg).then(() =>
+                baseGame.setToast({
+                    open: true,
+                    msg: "Copied to clipboard",
+                })
+            );
         }
     };
 

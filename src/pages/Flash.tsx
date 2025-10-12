@@ -18,21 +18,35 @@ import { useParams } from "react-router-dom";
 import FooterToolbar from "../components/FooterToolbar";
 import MotionCard from "../components/MotionCard";
 import { FlashLoseModal } from "../components/FlashLoseModal";
-import { ConfirmModal } from "../components/GameModals";
+import { ConfirmModal, WatchAdModal } from "../components/GameModals";
 import { useFlashGameLogic } from "../hooks/useFlashGameLogic";
 import { PlayPageProps, Difficulty } from "../data/playTypes";
 import "./Play.css";
+import { Capacitor } from "@capacitor/core";
+import { useEffect, useState } from "react";
+import { admobService } from "../data/admob/adMobService";
+import { usePlayData } from "../hooks/usePlayData";
 
 // ---------------------- Main Component ----------------------
 export default function PlayPage(props: PlayPageProps) {
     const router = useIonRouter();
     const { difficulty } = useParams<{ difficulty: Difficulty }>();
-    
+    const [showWatchAdModal, setShowWatchAdModal] = useState(false);
+    const [typeAd, setTypeAd] = useState<"showOne" | "showAll">("showOne");
     // Combine props with URL params
     const playProps: PlayPageProps = {
         ...props,
+        setShowWatchAdModal: setShowWatchAdModal,
+        setTypeAd: setTypeAd,
         difficulty: difficulty || props.difficulty,
     };
+
+    const { incrementDiamondByKey } = usePlayData();
+
+    useEffect(() => {
+        admobService.prepareInterstitial();
+        admobService.prepareRewarded();
+    }, []);
 
     const {
         cards,
@@ -58,6 +72,16 @@ export default function PlayPage(props: PlayPageProps) {
         setShowAllConfirm,
     } = useFlashGameLogic(playProps);
 
+    useEffect(() => {
+        if (Capacitor.getPlatform() === "web") return;
+
+        admobService.showBanner();
+
+        return () => {
+            admobService.hideBanner();
+        };
+    }, []);
+
     return (
         <IonPage className="play-page">
             <IonHeader translucent>
@@ -69,15 +93,16 @@ export default function PlayPage(props: PlayPageProps) {
                     </IonButtons>
                     <IonTitle className="text-center">
                         <div className="header-title">
-                            <span className="header-title-text">
-                                score
-                            </span>
+                            <span className="header-title-text">score</span>
                             <span className="header-title-score">{score}</span>
                         </div>
                     </IonTitle>
                     <IonButtons slot="end">
                         <IonChip color="light" className="header-timer">
-                            <IonText className="header-timer-text" color="warning">
+                            <IonText
+                                className="header-timer-text"
+                                color="warning"
+                            >
                                 {timeLeft}s
                             </IonText>
                         </IonChip>
@@ -88,9 +113,7 @@ export default function PlayPage(props: PlayPageProps) {
             <IonContent fullscreen className="content-container">
                 {/* High Score Message */}
                 {highScoreMessage && (
-                    <div className="high-score-message">
-                        {highScoreMessage}
-                    </div>
+                    <div className="high-score-message">{highScoreMessage}</div>
                 )}
                 <div className={`card-grid card-grid-${gridSize}`}>
                     {/* CARD GRID */}
@@ -99,7 +122,9 @@ export default function PlayPage(props: PlayPageProps) {
                             {card ? (
                                 <MotionCard
                                     card={card}
-                                    onClick={() => gameStarted && handleCardClick(idx)}
+                                    onClick={() =>
+                                        gameStarted && handleCardClick(idx)
+                                    }
                                     difficulty={difficulty}
                                 />
                             ) : (
@@ -141,15 +166,24 @@ export default function PlayPage(props: PlayPageProps) {
                         setInfo({ show: false });
                     }}
                 />
+                <WatchAdModal
+                    isOpen={showWatchAdModal}
+                    onCancel={() => setShowWatchAdModal(false)}
+                    onWatch={async () => {
+                        await admobService.showRewarded();
+                        incrementDiamondByKey(typeAd, 1);
+                        setShowWatchAdModal(false);
+                    }}
+                />
             </IonContent>
-            
+
             <FooterToolbar
                 onToggleShowOne={onToggleShowOne}
                 onShowAll={onShowAll}
                 showOneDiamonds={showOneDiamonds}
                 showAllDiamonds={showAllDiamonds}
             />
-            
+
             <IonToast
                 isOpen={toast.open}
                 message={toast.msg}
@@ -159,4 +193,3 @@ export default function PlayPage(props: PlayPageProps) {
         </IonPage>
     );
 }
-
