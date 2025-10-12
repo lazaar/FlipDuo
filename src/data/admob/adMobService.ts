@@ -1,6 +1,7 @@
 import { AdMob, BannerAdSize, BannerAdPosition, AdOptions } from '@capacitor-community/admob';
 import { Capacitor } from '@capacitor/core';
 
+const IS_TESTING = true;
 class AdmobService {
   private isInterstitialLoaded = false;
   private isRewardedLoaded = false;
@@ -42,7 +43,7 @@ class AdmobService {
       this.detectPlatform();
       
       await AdMob.initialize({
-        initializeForTesting: true, // Set to true for testing
+        initializeForTesting: IS_TESTING, // Set to true for testing
       });
       console.log('AdMob initialized');
       // Prepare first interstitial after initialization
@@ -60,7 +61,7 @@ class AdmobService {
         position: BannerAdPosition.BOTTOM_CENTER,
         margin: 50,
         adSize: BannerAdSize.ADAPTIVE_BANNER,
-        isTesting: true, // Set to true for testing
+        isTesting: IS_TESTING, // Set to true for testing
       });
       console.log('Banner shown');
     } catch (err) {
@@ -72,7 +73,7 @@ class AdmobService {
     try {
       await AdMob.prepareInterstitial({
         adId: this.getAdId('interstitial'), 
-        isTesting: true,
+        isTesting: IS_TESTING,
       } as AdOptions);
       this.isInterstitialLoaded = true;
       console.log('Interstitial prepared');
@@ -116,7 +117,7 @@ async showInterstitial() {
     try {
       await AdMob.prepareRewardVideoAd({
         adId: this.getAdId('rewarded'),
-        isTesting: true,
+        isTesting: IS_TESTING,
       } as AdOptions);
       this.isRewardedLoaded = true;
       console.log('Rewarded ad prepared');

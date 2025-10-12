@@ -2,14 +2,27 @@ import { PlayPageProps } from "../data/playTypes";
 import { FlipConstants } from "../data/playConstants";
 import { useBaseGameLogic } from "./useBaseGameLogic";
 import { admobService } from "../data/admob/adMobService";
+import { hideAll } from "../data/playUtils";
+import { usePlayData } from "./usePlayData";
 
 export function useGameLogic({ difficulty = "medium", setShowWatchAdModal, setTypeAd }: PlayPageProps) {
     const baseGame = useBaseGameLogic({ difficulty, isFlashMode: false, setShowWatchAdModal, setTypeAd });
-
+    const { decrementDiamondByKey } = usePlayData();
 
     const onContinue = (): void => {
         baseGame.setLose(false);
         baseGame.setHearts(1);
+        
+        // Reset refs to allow game interaction
+        baseGame.openedRef.current = -1;
+        baseGame.triggerEventRef.current = true;
+        baseGame.noClickRef.current = true;
+        
+        // Hide all cards first
+        const cards = [...baseGame.cards];
+        hideAll(cards);
+        baseGame.setCards(cards);
+        decrementDiamondByKey("hearts");
         setTimeout(() => {
             baseGame.setGameStarted(true);
         }, 700);

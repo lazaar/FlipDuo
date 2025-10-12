@@ -145,3 +145,7 @@
 .icon-button.custom-button {
   min-width: inherit;
 }
+
+.header-background{
+  backdrop-filter: none !important;
+}

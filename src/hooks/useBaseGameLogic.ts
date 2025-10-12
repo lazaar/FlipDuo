@@ -585,9 +585,11 @@ export function useBaseGameLogic({
         setGameStarted,
         setScore,
         setTextShare,
+        setCards,
         // Internal refs for modes to use
         openedRef,
         triggerEventRef,
+        noClickRef,
         // Error handling override
         handleError,
         setTimeLeft,

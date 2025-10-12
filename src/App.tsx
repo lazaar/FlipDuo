@@ -54,6 +54,7 @@ import {
 } from "@capawesome/capacitor-screen-orientation";
 import GiftDialog from "./components/GiftDialog";
 import { admobService } from "./data/admob/adMobService.ts";
+import { Capacitor } from "@capacitor/core";
 
 setupIonicReact();
 const persistor = persistStore(store);
@@ -81,20 +82,26 @@ const App: React.FC = () => {
                 }
             }
         );
+        if (Capacitor.getPlatform() === "android") {
+            (async () => {
+                try {
+                    await StatusBar.setOverlaysWebView({ overlay: false });
+                    await StatusBar.setStyle({ style: Style.Light }); // or Style.Dark
+                } catch (err) {
+                    console.warn(
+                        "StatusBar plugin not available in web preview",
+                        err
+                    );
+                }
+            })();
+        }
+
+
 
         return () => {
             void backHandler.then((handler) => handler.remove());
         };
     }, [router]);
-
-    (async () => {
-        try {
-            await StatusBar.setOverlaysWebView({ overlay: false });
-            await StatusBar.setStyle({ style: Style.Light }); // or Style.Dark
-        } catch (err) {
-            console.warn("StatusBar plugin not available in web preview", err);
-        }
-    })();
 
     useEffect(() => {
         admobService.initialize();
@@ -129,3 +136,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+

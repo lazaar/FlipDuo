@@ -56,7 +56,9 @@
         "react-router": "^5.3.4",
         "react-router-dom": "^5.3.4",
         "redux": "^5.0.1",
-        "redux-persist": "^6.0.0"
+        "redux-persist": "^6.0.0",
+        "@capacitor/screen-orientation": "^7.0.2",
+        "@capacitor/splash-screen": "^7.0.2"
     },
     "devDependencies": {
         "@capacitor/cli": "^7.4.2",
