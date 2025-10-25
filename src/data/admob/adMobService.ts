@@ -1,7 +1,7 @@
 import { AdMob, BannerAdSize, BannerAdPosition, AdOptions } from '@capacitor-community/admob';
 import { Capacitor } from '@capacitor/core';
 
-const IS_TESTING = true;
+const IS_TESTING = false;
 class AdmobService {
   private isInterstitialLoaded = false;
   private isRewardedLoaded = false;
