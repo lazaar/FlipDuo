@@ -22,25 +22,25 @@ interface AudioAsset {
 const audioAssets: AudioAsset[] = [
     {
         assetId: "click",
-        assetPath: "public/assets/click.mp3",
+        assetPath: "public/assets/audio/click.mp3",
         audioChannelNum: 1,
         isUrl: false
     },
     {
         assetId: "correct",
-        assetPath: "public/assets/correct.wav",
+        assetPath: "public/assets/audio/correct.wav",
         audioChannelNum: 1,
         isUrl: false
     },
     {
         assetId: "unlocked",
-        assetPath: "public/assets/unlocked.mp3",
+        assetPath: "public/assets/audio/unlocked.mp3",
         audioChannelNum: 1,
         isUrl: false
     },
     {
         assetId: "mistake",
-        assetPath: "public/assets/wordMistake.wav",
+        assetPath: "public/assets/audio/wordMistake.wav",
         audioChannelNum: 1,
         isUrl: false
     }
