@@ -56,6 +56,7 @@ export default function PlayPage(props: PlayPageProps) {
         showAllConfirm,
         showAllDiamonds,
         showOneDiamonds,
+        showOneDisabled,
         heartsDiamonds,
         gameStarted,
         info,
@@ -71,6 +72,7 @@ export default function PlayPage(props: PlayPageProps) {
         setToast,
         setInfo,
         setShowAllConfirm,
+        isShaking,
     } = useGameLogic(playProps);
 
     useEffect(() => {
@@ -137,6 +139,7 @@ export default function PlayPage(props: PlayPageProps) {
                                         gameStarted && handleCardClick(idx)
                                     }
                                     difficulty={difficulty}
+                                    isShaking={isShaking}
                                 />
                             ) : (
                                 <div className="empty-card" />
@@ -195,6 +198,7 @@ export default function PlayPage(props: PlayPageProps) {
                 onShowAll={onShowAll}
                 showOneDiamonds={showOneDiamonds}
                 showAllDiamonds={showAllDiamonds}
+                showOneDisabled={showOneDisabled}
             />
 
             <IonToast

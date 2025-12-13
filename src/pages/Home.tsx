@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "motion/react";
 import { Share as SharePlugin } from "@capacitor/share";
-import { volumeHigh, volumeMute, shareSocial, play, timerOutline, trophy } from "ionicons/icons";
+import { volumeHigh, volumeMute, shareSocial, play, timerOutline, trophy, informationCircle } from "ionicons/icons";
 
 import "./Home.css";
 import { getUrl } from "../data/utils";
@@ -38,6 +38,11 @@ const Home: React.FC = () => {
     const handleBestScoresClick = () => {
         playSound("click");
         setShowBestScoresModal(true);
+    };
+
+    const handleHowToPlayClick = () => {
+        playSound("click");
+        history.push("/how-to-play");
     };
 
     const handleDifficultySelect = (difficulty: Difficulty) => {
@@ -164,6 +169,12 @@ const Home: React.FC = () => {
                         >
                             <IonIcon icon={timerOutline} size="large" />
                             Flash Mode
+                        </button>
+                        <button
+                            className="custom-button warning-button"
+                            onClick={handleHowToPlayClick}
+                        >
+                            <IonIcon icon={informationCircle} size="large" /> How to Play
                         </button>
                     </div>
                 </div>

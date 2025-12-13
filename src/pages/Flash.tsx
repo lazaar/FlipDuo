@@ -62,6 +62,7 @@ export default function PlayPage(props: PlayPageProps) {
         textShare,
         toast,
         gridSize,
+        showOneDisabled,
         handleCardClick,
         onShowAll,
         onToggleShowOne,
@@ -182,6 +183,7 @@ export default function PlayPage(props: PlayPageProps) {
                 onShowAll={onShowAll}
                 showOneDiamonds={showOneDiamonds}
                 showAllDiamonds={showAllDiamonds}
+                showOneDisabled={showOneDisabled}
             />
 
             <IonToast

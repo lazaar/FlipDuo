@@ -11,6 +11,7 @@ interface FooterToolbarProps {
     onShowAll: (isSure: boolean) => void;
     showOneDiamonds: number;
     showAllDiamonds: number;
+    showOneDisabled: boolean;
 }
 
 export default function FooterToolbar({
@@ -18,6 +19,7 @@ export default function FooterToolbar({
     onShowAll,
     showOneDiamonds,
     showAllDiamonds,
+    showOneDisabled,
 }: FooterToolbarProps) {
     return (
         <IonFooter className="bottom-navigation">
@@ -26,6 +28,7 @@ export default function FooterToolbar({
                     fill="clear"
                     className="navigation-button show-one-button"
                     onClick={onToggleShowOne}
+                    disabled={showOneDisabled}
                 >
                     <IonText>Show One</IonText>
                     <IonBadge color="danger" className="hint-badge" slot="end">

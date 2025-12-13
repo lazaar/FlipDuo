@@ -98,6 +98,13 @@
 .custom-button.warning-button::before {
   box-shadow: 0 8px 0 #8a710c;
 }
+.custom-button.info-button {
+  background: linear-gradient(#3498db, #2980b9);
+  box-shadow: 0 4px 0 #1f5f8b;
+}
+.custom-button.info-button::before {
+  box-shadow: 0 8px 0 #1f5f8b;
+}
 
 .custom-button.small-button {
   font-size: 1.2rem;

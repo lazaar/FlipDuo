@@ -106,6 +106,7 @@ export function useFlashGameLogic({
         showOneDiamonds: baseGame.showOneDiamonds,
         heartsDiamonds: baseGame.heartsDiamonds,
         showOne: baseGame.showOne,
+        showOneDisabled: baseGame.showOneDisabled,
         info: baseGame.info,
         textShare: baseGame.textShare,
         toast: baseGame.toast,

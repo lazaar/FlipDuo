@@ -46,6 +46,7 @@ export function useGameLogic({ difficulty = "medium", setShowWatchAdModal, setTy
         showOneDiamonds: baseGame.showOneDiamonds,
         heartsDiamonds: baseGame.heartsDiamonds,
         showOne: baseGame.showOne,
+        showOneDisabled: baseGame.showOneDisabled,
         info: baseGame.info,
         textShare: baseGame.textShare,
         toast: baseGame.toast,
@@ -61,6 +62,7 @@ export function useGameLogic({ difficulty = "medium", setShowWatchAdModal, setTy
         setToast: baseGame.setToast,
         setInfo: baseGame.setInfo,
         setShowAllConfirm: baseGame.setShowAllConfirm,
+        isShaking: baseGame.isShaking,
     };
 }
 

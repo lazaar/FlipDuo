@@ -10,10 +10,11 @@ import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
 import { App as CapacitorApp } from "@capacitor/app";
 import { StatusBar, Style } from "@capacitor/status-bar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Home from "./pages/Home";
 import Play from "./pages/Play.tsx";
 import Flash from "./pages/Flash.tsx";
+import HowToPlay from "./pages/HowToPlay";
 
 import { store } from "./store";
 import { persistStore } from "redux-persist";
@@ -55,12 +56,16 @@ import {
 import GiftDialog from "./components/GiftDialog";
 import { admobService } from "./data/admob/adMobService.ts";
 import { Capacitor } from "@capacitor/core";
+import { ExitConfirmModal } from "./components/ExitConfirmModal";
 
 setupIonicReact();
 const persistor = persistStore(store);
 
 const App: React.FC = () => {
     const router = useIonRouter();
+    const [showExitModal, setShowExitModal] = useState(false);
+    const [canGoBack, setCanGoBack] = useState(false);
+
     useEffect(() => {
         async () =>
             await ScreenOrientation.lock({ type: OrientationType.PORTRAIT });
@@ -73,13 +78,9 @@ const App: React.FC = () => {
     useEffect(() => {
         const backHandler = CapacitorApp.addListener(
             "backButton",
-            ({ canGoBack }) => {
-                if (canGoBack) {
-                    router.goBack();
-                } else {
-                    // Already at first page → exit app
-                    CapacitorApp.exitApp();
-                }
+            ({ canGoBack: canGoBackValue }) => {
+                setCanGoBack(canGoBackValue);
+                setShowExitModal(true);
             }
         );
         if (Capacitor.getPlatform() === "android") {
@@ -107,11 +108,31 @@ const App: React.FC = () => {
         admobService.initialize();
     }, []);
 
+    const handleExitConfirm = () => {
+        setShowExitModal(false);
+        if (canGoBack) {
+            router.goBack();
+        } else {
+            // Already at first page → exit app
+            CapacitorApp.exitApp();
+        }
+    };
+
+    const handleExitCancel = () => {
+        setShowExitModal(false);
+    };
+
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
                 <IonApp>
                     <GiftDialog />
+                    <ExitConfirmModal
+                        isOpen={showExitModal}
+                        canGoBack={canGoBack}
+                        onConfirm={handleExitConfirm}
+                        onCancel={handleExitCancel}
+                    />
 
                     <IonReactRouter>
                         <IonRouterOutlet>
@@ -123,6 +144,9 @@ const App: React.FC = () => {
                             </Route>
                             <Route exact path="/flash/:difficulty">
                                 <Flash />
+                            </Route>
+                            <Route exact path="/how-to-play">
+                                <HowToPlay />
                             </Route>
                             <Route exact path="/">
                                 <Redirect to="/home" />

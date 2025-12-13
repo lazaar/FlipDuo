@@ -169,6 +169,7 @@ export function useBaseGameLogic({
     const [lose, setLose] = useState<boolean>(false);
     const [showAllConfirm, setShowAllConfirm] = useState<boolean>(false);
     const [showOne, setShowOne] = useState<any>(null);
+    const [showOneDisabled, setShowOneDisabled] = useState<boolean>(false);
     const [info, setInfo] = useState<{ show: boolean; content?: string }>({
         show: false,
     });
@@ -177,6 +178,7 @@ export function useBaseGameLogic({
         open: false,
         msg: "",
     });
+    const [isShaking, setIsShaking] = useState<boolean>(false);
 
     const openedRef = useRef<number>(-1);
     const triggerEventRef = useRef<boolean>(true);
@@ -203,8 +205,8 @@ export function useBaseGameLogic({
 
     // Game Logic Functions
     const handleCardClick = (index: number): void => {
-        playSound("click");
         if (triggerEventRef.current && noClickRef.current) {
+            playSound("click");
             const cardsNow = [...cards];
             const clicked = cardsNow[index];
 
@@ -217,8 +219,9 @@ export function useBaseGameLogic({
                 showOneCard(index, cardsNow);
                 return;
             }
+            setShowOneDisabled(true);
             showOneFunction(cardsNow, index);
-
+            
             if (openedRef.current === -1) {
                 openedRef.current = index;
                 setCards(cardsNow);
@@ -391,8 +394,11 @@ export function useBaseGameLogic({
                 if (openedRef.current === index1) openedRef.current = -1;
                 triggerEventRef.current = true;
                 setCards([...cardsNow]);
-            }, totalDelay + 500);
+                setShowOneDisabled(false);
+            }, totalDelay + 350);
         } else {
+            setCards([...cardsNow]);
+
             // Error path - this will be overridden by specific modes
             handleError(index1, index2, cardsNow);
         }
@@ -420,20 +426,24 @@ export function useBaseGameLogic({
                     }
                 }, 100);
             } else {
+                setIsShaking(true);
                 setTimeout(() => {
                     hideAll(cardsNow);
                     setCards([...cardsNow]);
+                    setShowOneDisabled(false);
                     if (openedRef?.current === index1) openedRef.current = -1;
                     triggerEventRef.current = true;
-                }, FlipConstants.delay.hideOnError + 500);
+                    setIsShaking(false);
+                }, FlipConstants.delay.hideOnError);
             }
         } else {
             setTimeout(() => {
                 hideAll(cardsNow);
                 setCards([...cardsNow]);
+                setShowOneDisabled(false);
                 if (openedRef?.current === index1) openedRef.current = -1;
                 triggerEventRef.current = true;
-            }, FlipConstants.delay.hideOnError - 50);
+            }, FlipConstants.delay.hideOnError);
         }
     };
 
@@ -474,6 +484,7 @@ export function useBaseGameLogic({
             setCards((prev) => {
                 const next = prev.map((c) => ({ ...c }));
                 hideAll(next);
+                openedRef.current = -1;
                 return next;
             });
             noClickRef.current = true;
@@ -566,11 +577,13 @@ export function useBaseGameLogic({
         showOneDiamonds: diamonds.showOne,
         heartsDiamonds: diamonds.hearts,
         showOne,
+        showOneDisabled,
         info,
         textShare,
         toast,
         gridSize,
         gameStarted,
+        isShaking,
         // Actions
         handleCardClick,
         onShowAll,

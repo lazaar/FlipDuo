@@ -12,6 +12,8 @@ interface MotionCardProps {
     card: Card;
     onClick: () => void;
     difficulty: Difficulty;
+    lose?: boolean;
+    isFlashMode?: boolean;
 }
 // ---------------------- UI Building Blocks ----------------------
 const CardFace: React.FC<CardFaceProps> = ({ value, difficulty }) => {
@@ -33,10 +35,12 @@ const MotionCard: React.FC<MotionCardProps> = ({
     card,
     onClick,
     difficulty,
+    isShaking = false,
 }) => {
     const isFaceUp = card.state !== "hide";
     const isLoading = card.state === "load";
     const isMoving = card.state === "moving";
+    const shouldShake = isShaking && !isMoving;
     // const numeric = typeof card.value === "number" ? card.value : 0;
 
     return (
@@ -48,6 +52,8 @@ const MotionCard: React.FC<MotionCardProps> = ({
                 rotateY: isFaceUp ? 0 : 180,
                 scale: isMoving ? 0 : 1,
                 opacity: isMoving ? 0 : 1,
+                x: shouldShake ? [0, -8, 8, -8, 8, -4, 4, 0] : 0,
+                rotate: shouldShake ? [0, -3, 3, -3, 3, -1.5, 1.5, 0] : 0,
             }}
             transition={{
                 type: "spring",
@@ -58,6 +64,20 @@ const MotionCard: React.FC<MotionCardProps> = ({
                     stiffness: 300,
                     damping: 25,
                 },
+                x: shouldShake
+                    ? {
+                          duration: 0.4,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                      }
+                    : {},
+                rotate: shouldShake
+                    ? {
+                          duration: 0.4,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                      }
+                    : {},
             }}
         >
             {/* Front */}

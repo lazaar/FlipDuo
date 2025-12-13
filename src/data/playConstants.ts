@@ -3,12 +3,12 @@ import { FlipConstantsType } from './playTypes';
 export const FlipConstants: FlipConstantsType = {
     delay: {
         showAllDiamonds: 2000,
-        removeCardOnsuccess: 500,
+        removeCardOnsuccess: 300,
         showAllShuffle: 400,
-        generateCardOnsuccess: 300,
+        generateCardOnsuccess: 200,
         hideAllShuffle: 300,
-        hideOnsuccess: 350,
-        hideOnError: 900,
+        hideOnsuccess: 250,
+        hideOnError: 400,
         firstShowDelay: 40,
         firstHideAll: 300,
     },
