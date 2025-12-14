@@ -79,6 +79,7 @@ export default function PlayPage(props: PlayPageProps) {
         if (Capacitor.getPlatform() === "web") return;
 
         admobService.showBanner();
+        admobService.resumeBanner();
 
         return () => {
             admobService.hideBanner();

@@ -59,7 +59,7 @@ class AdmobService {
       await AdMob.showBanner({
         adId: this.getAdId('banner'),
         position: BannerAdPosition.BOTTOM_CENTER,
-        margin: 50,
+        margin: 56,
         adSize: BannerAdSize.ADAPTIVE_BANNER,
         isTesting: IS_TESTING, // Set to true for testing
       });
@@ -67,6 +67,15 @@ class AdmobService {
     } catch (err) {
       console.error('Banner error:', err);
     }
+  }
+
+  async resumeBanner() {
+    try {
+      await AdMob.resumeBanner();
+      console.log('Banner resumed');
+    } catch (err) {
+      console.error('Resume banner error:', err);
+    }   
   }
   
   async prepareInterstitial() {

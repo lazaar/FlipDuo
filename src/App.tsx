@@ -3,14 +3,12 @@ import {
     IonApp,
     IonRouterOutlet,
     setupIonicReact,
-    useIonRouter,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
-import { App as CapacitorApp } from "@capacitor/app";
 import { StatusBar, Style } from "@capacitor/status-bar";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Home from "./pages/Home";
 import Play from "./pages/Play.tsx";
 import Flash from "./pages/Flash.tsx";
@@ -35,15 +33,6 @@ import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-
-/* import '@ionic/react/css/palettes/dark.always.css'; */
-/* import '@ionic/react/css/palettes/dark.class.css'; */
 import "@ionic/react/css/palettes/dark.system.css";
 
 /* Theme variables */
@@ -56,16 +45,16 @@ import {
 import GiftDialog from "./components/GiftDialog";
 import { admobService } from "./data/admob/adMobService.ts";
 import { Capacitor } from "@capacitor/core";
-import { ExitConfirmModal } from "./components/ExitConfirmModal";
+import { BackButtonHandler } from "./components/BackButton/BackButtonHandler.tsx";
 
-setupIonicReact();
+// Disable Ionic's default back button handling
+setupIonicReact({
+    hardwareBackButton: false
+});
+
 const persistor = persistStore(store);
 
 const App: React.FC = () => {
-    const router = useIonRouter();
-    const [showExitModal, setShowExitModal] = useState(false);
-    const [canGoBack, setCanGoBack] = useState(false);
-
     useEffect(() => {
         async () =>
             await ScreenOrientation.lock({ type: OrientationType.PORTRAIT });
@@ -76,18 +65,11 @@ const App: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        const backHandler = CapacitorApp.addListener(
-            "backButton",
-            ({ canGoBack: canGoBackValue }) => {
-                setCanGoBack(canGoBackValue);
-                setShowExitModal(true);
-            }
-        );
         if (Capacitor.getPlatform() === "android") {
             (async () => {
                 try {
                     await StatusBar.setOverlaysWebView({ overlay: false });
-                    await StatusBar.setStyle({ style: Style.Light }); // or Style.Dark
+                    await StatusBar.setStyle({ style: Style.Light });
                 } catch (err) {
                     console.warn(
                         "StatusBar plugin not available in web preview",
@@ -96,45 +78,22 @@ const App: React.FC = () => {
                 }
             })();
         }
-
-
-
-        return () => {
-            void backHandler.then((handler) => handler.remove());
-        };
-    }, [router]);
+    }, []);
 
     useEffect(() => {
         admobService.initialize();
     }, []);
-
-    const handleExitConfirm = () => {
-        setShowExitModal(false);
-        if (canGoBack) {
-            router.goBack();
-        } else {
-            // Already at first page → exit app
-            CapacitorApp.exitApp();
-        }
-    };
-
-    const handleExitCancel = () => {
-        setShowExitModal(false);
-    };
 
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
                 <IonApp>
                     <GiftDialog />
-                    <ExitConfirmModal
-                        isOpen={showExitModal}
-                        canGoBack={canGoBack}
-                        onConfirm={handleExitConfirm}
-                        onCancel={handleExitCancel}
-                    />
-
+                    
                     <IonReactRouter>
+                        {/* BackButtonHandler now has access to router context */}
+                        <BackButtonHandler />
+                        
                         <IonRouterOutlet>
                             <Route exact path="/home">
                                 <Home />
@@ -160,4 +119,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-

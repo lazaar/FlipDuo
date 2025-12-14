@@ -5,6 +5,9 @@ const config: CapacitorConfig = {
   appName: 'FlipDuo',
   webDir: 'dist',
   plugins: {
+     App: {
+      hardwareBackButton: true  // This enables custom back button handling
+    },
     SplashScreen: {
       launchShowDuration: 2000,
       launchAutoHide: true,
