@@ -350,7 +350,6 @@ export function useBaseGameLogic({
                         setBestScoreSimpleData(next);
                     }
                     setHighScoreMessage("A new High score!");
-                    playSound("unlocked");
                 }
                 return next;
             });
